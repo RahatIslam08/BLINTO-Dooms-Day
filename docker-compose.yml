@@ -1,0 +1,19 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      MONGODB_URI: ${MONGODB_URI:?Set MONGODB_URI in the project .env file}
+      NODE_ENV: production
+      CORS_ORIGIN: http://localhost:8080
